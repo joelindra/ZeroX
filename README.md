@@ -98,6 +98,3 @@ This tool is intended for **security research** and **bug bounty hunting** purpo
 Contributions are always welcome! Feel free to fork this repository and submit a Pull Request if you have ideas for new features or bug fixes.
 
 ---
-
-*Built with ❤️ for the Cybersecurity community.*
-
