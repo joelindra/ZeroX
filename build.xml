@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ZeroX-Burp" default="build" basedir=".">
+    
+    <!-- Properties -->
+    <property name="version" value="1.0.0"/>
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="jar.name" value="ZeroX-Burp-${version}.jar"/>
+    
+    <!-- Burp Extender API -->
+    <property name="burp.api.url" value="https://repo1.maven.org/maven2/net/portswigger/burp/extender/burp-extender-api/2.1/burp-extender-api-2.1.jar"/>
+    <property name="burp.api.jar" value="${lib.dir}/burp-extender-api-2.1.jar"/>
+    
+    <!-- Classpath -->
+    <path id="classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    
+    <!-- Clean -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+    
+    <!-- Download Burp Extender API -->
+    <target name="download-burp-api" description="Download Burp Extender API">
+        <mkdir dir="${lib.dir}"/>
+        <get src="${burp.api.url}" dest="${burp.api.jar}" skipexisting="true"/>
+    </target>
+    
+    <!-- Init -->
+    <target name="init" depends="download-burp-api">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+    
+    <!-- Compile -->
+    <target name="compile" depends="init" description="Compile Java sources">
+        <javac srcdir="${src.dir}" 
+               destdir="${classes.dir}" 
+               classpathref="classpath"
+               source="11"
+               target="11"
+               includeantruntime="false"
+               encoding="UTF-8">
+            <compilerarg value="-Xlint:unchecked"/>
+        </javac>
+    </target>
+    
+    <!-- Build JAR -->
+    <target name="jar" depends="compile" description="Create JAR file">
+        <jar destfile="${dist.dir}/${jar.name}" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Implementation-Title" value="ZeroX Burp Extension"/>
+                <attribute name="Implementation-Version" value="${version}"/>
+            </manifest>
+        </jar>
+        <echo message="JAR file created: ${dist.dir}/${jar.name}"/>
+    </target>
+    
+    <!-- Build (default target) -->
+    <target name="build" depends="jar" description="Build the extension"/>
+    
+    <!-- Clean build -->
+    <target name="rebuild" depends="clean,build" description="Clean and rebuild"/>
+    
+</project>

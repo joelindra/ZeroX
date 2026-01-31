@@ -1,0 +1,18 @@
+# Build results
+build/
+dist/
+
+# IDE files
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+*.log
+*.tmp
