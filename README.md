@@ -1,7 +1,4 @@
 # ZeroX - Advanced IDOR & BAC Automation Tool for Burp Suite
-
-![ZeroX Banner](assets/banner.png)
-
 **ZeroX** is a specialized Burp Suite extension designed to accelerate the testing process for **IDOR (Insecure Direct Object Reference)** and **BAC (Broken Access Control)** vulnerabilities. With its modern interface and intelligent automation, ZeroX empowers security researchers to identify authorization flaws with unprecedented efficiency.
 
 ---
@@ -54,9 +51,9 @@ The resulting `.jar` file will be available in the `dist/` directory.
 
 ### 1. Color Synchronization (Container Highlighting)
 
-ZeroX works by reading the `X-PwnFox-Color` header sent by the Firefox extension.
+ZeroX works by reading the `x-zerox-Color` header sent by the Firefox extension.
 
-- Use Firefox Containers with the name prefix `PwnFox-` (e.g., `PwnFox-Admin`, `PwnFox-User1`).
+- Use Firefox Containers with the name prefix `zerox-`.
 - Incoming requests to Burp will be automatically highlighted with the color matching the container.
 
 ### 2. Automated IDOR Testing (Automate BAC)
@@ -103,3 +100,4 @@ Contributions are always welcome! Feel free to fork this repository and submit a
 ---
 
 *Built with ❤️ for the Cybersecurity community.*
+
