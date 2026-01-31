@@ -1,5 +1,5 @@
 # ZeroX - Advanced IDOR & BAC Automation Tool for Burp Suite
-## Link to download: https://addons.mozilla.org/en-US/firefox/addon/zerox/
+## Link to Firefox Plugin: https://addons.mozilla.org/en-US/firefox/addon/zerox/
 **ZeroX** is a specialized Burp Suite extension designed to accelerate the testing process for **IDOR (Insecure Direct Object Reference)** and **BAC (Broken Access Control)** vulnerabilities. With its modern interface and intelligent automation, ZeroX empowers security researchers to identify authorization flaws with unprecedented efficiency.
 
 ---
@@ -99,4 +99,5 @@ This tool is intended for **security research** and **bug bounty hunting** purpo
 Contributions are always welcome! Feel free to fork this repository and submit a Pull Request if you have ideas for new features or bug fixes.
 
 ---
+
 
