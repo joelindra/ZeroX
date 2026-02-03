@@ -1487,7 +1487,10 @@ public class BurpExtender implements IBurpExtender, IProxyListener, IExtensionSt
                     if (parts.length == 2) {
                         detectedColor = parts[1].trim().toLowerCase();
                         stdout.println("[ZeroX] Detected color: " + detectedColor);
-                        messageInfo.setHighlight(detectedColor);
+                        
+                        // Map purple to magenta for Burp highlight
+                        String highlightColor = "purple".equals(detectedColor) ? "magenta" : detectedColor;
+                        messageInfo.setHighlight(highlightColor);
                     }
                 }
             }
