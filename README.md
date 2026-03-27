@@ -1,103 +1,127 @@
-# ZeroX - Advanced IDOR & BAC Automation Tool for Burp Suite
-## Link to Firefox Plugin: https://addons.mozilla.org/en-US/firefox/addon/zerox/
-**ZeroX** is a specialized Burp Suite extension designed to accelerate the testing process for **IDOR (Insecure Direct Object Reference)** and **BAC (Broken Access Control)** vulnerabilities. With its modern interface and intelligent automation, ZeroX empowers security researchers to identify authorization flaws with unprecedented efficiency.
+# 🛡️ ZeroX v1.2.0
+
+> **Advanced IDOR & BAC Automation Tool for Burp Suite**
+
+[![Release](https://img.shields.io/badge/Release-v1.2.0-blue.svg)](https://github.com/joelindra/ZeroX/releases)
+[![Build](https://img.shields.io/badge/Build-Maven-orange.svg)](https://maven.apache.org/)
+[![Java](https://img.shields.io/badge/Java-11%2B-red.svg)](https://www.oracle.com/java/)
+[![Firefox Extension](https://img.shields.io/badge/Firefox-Plugin-purple.svg)](https://addons.mozilla.org/en-US/firefox/addon/zerox/)
+
+**ZeroX** is a high-performance Burp Suite extension meticulously engineered to streamline the identification of **Insecure Direct Object Reference (IDOR)** and **Broken Access Control (BAC)** vulnerabilities. By combining real-time automation with a sophisticated user interface, ZeroX enables security researchers to perform deep authorization analysis with surgical precision.
 
 ---
 
-## 🚀 Key Features
+## 📽️ Preview
 
-- **🎨 Color-Synced Highlighting**: Automatically synchronizes Burp Suite highlight colors based on the Firefox Container being used. Visually distinguish requests from different users in an instant.
-- **⚡ Automated BAC Tester**: Perform batch IDOR testing on a collection of requests. Effortlessly compare original responses with modified ones using different authorization tokens.
-- **⏲️ Real-Time BAC Testing**: Intercept and test requests in real-time as you browse. ZeroX automatically duplicates requests and attempts them with your pre-configured Authorization headers.
-- **📊 Interactive Comparison**: Features an intuitive request/response comparison viewer to help you analyze differences in status codes, body lengths, and response content.
-- **🔍 Smart Filtering**: Filter target domains for real-time testing to eliminate noise from external analytics or third-party services.
-- **✨ Modern UI/UX**: A refined Swing-based interface with a contemporary design (Glassmorphism inspired, pill buttons, and a clean light theme).
+<img width="1679" height="1247" alt="image" src="https://github.com/user-attachments/assets/8d29b2a1-c4bc-42b5-abc7-c719e355109b" />
 
 ---
 
-## 🛠️ Prerequisites
+## ✨ Key Features
 
-Before building the tool, ensure you have the following installed:
+### 🎨 Intelligent Highlighting
 
-1. **Java JDK 11** or higher.
-2. **Apache Ant** (for the build process).
+Automatically synchronizes Burp Suite highlight colors with **Firefox Containers**. Instantly categorize traffic from different user sessions (e.g., Admin, Regular User, Guest) visually using the `x-zerox-Color` header.
+
+### ⚡ Automated Batch Testing
+
+Perform massive IDOR scans across multiple requests. ZeroX compares original responses with modified ones, highlighting anomalies in status codes and body lengths automatically in a clear results table.
+
+### ⏲️ Real-Time Authorization Analysis
+
+Intercept and re-test requests on-the-fly. ZeroX duplicates live traffic, injects alternative authorization headers, and identifies potential bypasses without manual intervention as you browse.
+
+### 📊 Professional Data Viewer
+
+Deep integration with Burp Suite's native message editors. Compare original and modified request/response pairs with full syntax highlighting and standard Burp inspection tools.
+
+### 🔍 Precision Filtering
+
+Eliminate background noise. Use advanced domain filtering to focus your real-time testing on specific target applications, ensuring zero interference from third-party services or analytics.
 
 ---
 
-## 🏗️ Build & Installation
+## 🛠️ Getting Started
 
-### 1. Build from Source
+### Prerequisites
 
-Use Apache Ant to compile and package the extension into a JAR file:
+- **Java JDK 11** or higher
+- **Apache Maven**
+- **Burp Suite Professional/Community**
+
+### Building from Source
+
+1. Clone the repository.
+2. Navigate to the project directory.
+3. Execute the build command:
 
 ```powershell
-# Run in the project directory
-ant build
+mvn clean package
 ```
 
-The resulting `.jar` file will be available in the `dist/` directory.
+4. Find the compiled result at `target/zero-x-1.2.0.jar`.
 
-### 2. Installation in Burp Suite
+### Installation
 
-1. Open **Burp Suite**.
+1. Open Burp Suite.
 2. Navigate to the **Extensions** tab.
-3. Click the **Add** button.
-4. Select **Extension type: Java**.
-5. Select the JAR file located at `dist/ZeroX-Burp-1.0.0.jar`.
-6. The **ZeroX** tab will appear in Burp Suite's main dashboard.
+3. Click **Add** and select **Extension type: Java**.
+4. Browse to `target/zero-x-1.2.0.jar` and click **Next**.
 
 ---
 
-## 📖 How to Use
+## 📖 Deep Dive: Usage Guide
 
-### 1. Color Synchronization (Container Highlighting)
+### 1. The Firefox Bridge
 
-ZeroX works by reading the `x-zerox-Color` header sent by the Firefox extension.
+ZeroX pairs perfectly with the **[ZeroX Firefox Plugin](https://addons.mozilla.org/en-US/firefox/addon/zerox/)**.
 
-- Use Firefox Containers with the name prefix `zerox-`.
-- Incoming requests to Burp will be automatically highlighted with the color matching the container.
+- It detects the `x-zerox-Color` header injected by the plugin.
+- Simply name your containers starting with `zerox-` (e.g., `zerox-admin`, `zerox-user`).
 
-### 2. Automated IDOR Testing (Automate BAC)
+### 2. Automate BAC Workflow
 
-1. Collect the requests you want to test in the **Automate BAC** tab.
-2. Input the target authorization token (e.g., a Bearer Token or Cookie from another user).
-3. Click **Start Test**.
-4. ZeroX will process all requests and display a comparison of statuses and response sizes.
+1. Collect requests in the **Automate BAC** tab.
+2. Provide the target authorization token (Bearer, Cookie, etc.).
+3. Hit **Start Test**.
+4. Analyze the results for status differences or size deviations.
 
-### 3. Real-Time Testing (Real-Time BAC)
+### 3. Real-Time Guardian
 
-1. Enable the **Real Time BAC** toggle.
-2. Configure the **Authorization Header** you wish to use for testing (e.g., from a low-level user or a different account).
-3. Set the **Domain Filter** to focus only on the application under test.
-4. As you browse, ZeroX will duplicate each request with the new header and report findings if a potential bypass is detected.
+1. Toggle **Real Time BAC** to ON.
+2. Input your secondary user's authorization header.
+3. Set the **Domain Filter** (use "Select" for focused testing).
+4. Browse the application naturally; ZeroX will report findings in the results panel.
 
 ---
 
-## 📁 Project Structure
+## 📁 Project Architecture
 
 ```text
 burp/
-├── src/
-│   └── burp/
-│       └── BurpExtender.java    # Core extension logic
-├── assets/                       # Images & documentation assets
-├── build.xml                     # Apache Ant configuration
-├── lib/                          # Library dependencies
-└── dist/                         # Compiled output (.jar)
+├── 📂 assets/          # Brand assets and visual documentation
+├── 📂 src/             # Core Java source code
+│   └── 📂 main/java    # Managed under Maven standards
+├── 📄 pom.xml          # Maven Project Object Model
+└── 📄 BUILD.md         # Detailed build instructions
 ```
 
 ---
 
-## 🛡️ Security & Disclaimer
+## 🛡️ Disclaimer
 
-This tool is intended for **security research** and **bug bounty hunting** purposes only. Using this tool against targets without explicit written permission is illegal. The author is not responsible for any misuse of this tool.
-
----
-
-## 🤝 Contribution
-
-Contributions are always welcome! Feel free to fork this repository and submit a Pull Request if you have ideas for new features or bug fixes.
+This software is provided for **educational and ethical security testing** purposes only. The author assumes no liability for damages or legal issues resulting from improper use. Always obtain explicit written permission before testing any target.
 
 ---
 
+## 🤝 Contribution & Support
 
+Contributions drive the evolution of ZeroX. Feel free to:
+
+- Open an **Issue** for bug reports or feature requests.
+- Submit a **Pull Request** to improve the codebase.
+- Star the repository if you find it useful for your research!
+
+---
+
+Developed with ❤️ for the Security Community
