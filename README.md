@@ -1,19 +1,17 @@
-# 🛡️ ZeroX v1.2.0
+# 🛡️ ZeroX v2.0.0
 
-> **Advanced IDOR & BAC Automation Tool for Burp Suite**
+> **Advanced Browser Container Highlight, Session Bridge & Auth Matrix for Burp Suite (Montoya API)**
 
-[![Release](https://img.shields.io/badge/Release-v1.2.0-blue.svg)](https://github.com/joelindra/ZeroX/releases)
+[![Release](https://img.shields.io/badge/Release-v2.0.0-blue.svg)](https://github.com/joelindra/ZeroX/releases)
 [![Build](https://img.shields.io/badge/Build-Maven-orange.svg)](https://maven.apache.org/)
 [![Java](https://img.shields.io/badge/Java-11%2B-red.svg)](https://www.oracle.com/java/)
 [![Firefox Extension](https://img.shields.io/badge/Firefox-Plugin-purple.svg)](https://addons.mozilla.org/en-US/firefox/addon/zerox/)
 
-**ZeroX** is a high-performance Burp Suite extension meticulously engineered to streamline the identification of **Insecure Direct Object Reference (IDOR)** and **Broken Access Control (BAC)** vulnerabilities. By combining real-time automation with a sophisticated user interface, ZeroX enables security researchers to perform deep authorization analysis with surgical precision.
+<img width="1768" height="1348" alt="image" src="https://github.com/user-attachments/assets/e281b4b9-a017-4b37-9898-982e4671aa83" />
 
----
+**ZeroX** is a high-performance Burp Suite extension engineered to bridge the gap between browser containers and Burp Suite's highlighting/repeater workflows. By syncing Firefox Container colors with Burp's request highlights, it allows security researchers to manage and swap authorization sessions seamlessly without the need for additional UI panels.
 
-## 📽️ Preview
-
-<img width="1679" height="1247" alt="image" src="https://github.com/user-attachments/assets/8d29b2a1-c4bc-42b5-abc7-c719e355109b" />
+**New in v2.0**: Fully migrated to **Portswigger Montoya API** with Auto-Pilot Session Sync and Instant Privilege Escalation (Auth Matrix) Generator.
 
 ---
 
@@ -21,23 +19,19 @@
 
 ### 🎨 Intelligent Highlighting
 
-Automatically synchronizes Burp Suite highlight colors with **Firefox Containers**. Instantly categorize traffic from different user sessions (e.g., Admin, Regular User, Guest) visually using the `x-zerox-Color` header.
+Automatically synchronizes Burp Suite highlight colors with **Firefox Containers**. Instantly categorize traffic from different user sessions (e.g., Admin, Regular User, Guest) visually using the `x-zerox-color` header injected by our Firefox plugin.
 
-### ⚡ Automated Batch Testing
+### 🔑 Session Auth Bridge (Select Auth)
 
-Perform massive IDOR scans across multiple requests. ZeroX compares original responses with modified ones, highlighting anomalies in status codes and body lengths automatically in a clear results table.
+Quickly swap authorization tokens across sessions. Right-click any HTTP request in Burp, select **ZeroX** -> **Select Auth**, and pick a container color to automatically replace the `Authorization` header with the latest cached token from that container.
 
-### ⏲️ Real-Time Authorization Analysis
+### 🚀 Auto-Pilot Session Sync
 
-Intercept and re-test requests on-the-fly. ZeroX duplicates live traffic, injects alternative authorization headers, and identifies potential bypasses without manual intervention as you browse.
+No more manual swapping. When a request in **Repeater** or **Intruder** is highlighted with a specific color (role), ZeroX automatically detects the highlight and replaces the `Authorization` header with the latest cached token for that color before the request is sent.
 
-### 📊 Professional Data Viewer
+### 📊 Instant Auth Matrix Generator
 
-Deep integration with Burp Suite's native message editors. Compare original and modified request/response pairs with full syntax highlighting and standard Burp inspection tools.
-
-### 🔍 Precision Filtering
-
-Eliminate background noise. Use advanced domain filtering to focus your real-time testing on specific target applications, ensuring zero interference from third-party services or analytics.
+Generate an instant privilege escalation matrix. Right-click any request -> **ZeroX** -> **Generate Auth Matrix**. ZeroX will automatically send the request using all currently cached session tokens (plus an unauthenticated request) and display the results (Status Code, Response Length, Similarity) in the **ZeroX Matrix** tab.
 
 ---
 
@@ -47,7 +41,7 @@ Eliminate background noise. Use advanced domain filtering to focus your real-tim
 
 - **Java JDK 11** or higher
 - **Apache Maven**
-- **Burp Suite Professional/Community**
+- **Burp Suite Professional/Community** (Modern API supported)
 
 ### Building from Source
 
@@ -59,14 +53,14 @@ Eliminate background noise. Use advanced domain filtering to focus your real-tim
 mvn clean package
 ```
 
-4. Find the compiled result at `target/zero-x-1.2.0.jar`.
+4. Find the compiled result at `target/zero-x-2.0.0.jar`.
 
 ### Installation
 
 1. Open Burp Suite.
 2. Navigate to the **Extensions** tab.
 3. Click **Add** and select **Extension type: Java**.
-4. Browse to `target/zero-x-1.2.0.jar` and click **Next**.
+4. Browse to `target/zero-x-2.0.0.jar` and click **Next**.
 
 ---
 
@@ -76,52 +70,26 @@ mvn clean package
 
 ZeroX pairs perfectly with the **[ZeroX Firefox Plugin](https://addons.mozilla.org/en-US/firefox/addon/zerox/)**.
 
-- It detects the `x-zerox-Color` header injected by the plugin.
-- Simply name your containers starting with `zerox-` (e.g., `zerox-admin`, `zerox-user`).
+- It detects the `x-zerox-color` header injected by the plugin.
+- Simply name your Firefox containers starting with `zerox-` (e.g., `zerox-admin`, `zerox-user`).
+- Traffic originating from these containers will be colored automatically in Burp.
 
-### 2. Automate BAC Workflow
+### 2. Replacing Headers in Repeater/Proxy
 
-1. Collect requests in the **Automate BAC** tab.
-2. Provide the target authorization token (Bearer, Cookie, etc.).
-3. Hit **Start Test**.
-4. Analyze the results for status differences or size deviations.
+1. Right-click any request in Burp Suite (e.g., in Proxy History or Repeater).
+2. Choose **ZeroX** -> **Select Auth**.
+3. Choose the container color whose session you want to use.
+4. ZeroX replaces the `Authorization` header in the request on the fly using the latest intercepted token for that container.
 
-### 3. Real-Time Guardian
+### 3. Generating an Auth Matrix
 
-1. Toggle **Real Time BAC** to ON.
-2. Input your secondary user's authorization header.
-3. Set the **Domain Filter** (use "Select" for focused testing).
-4. Browse the application naturally; ZeroX will report findings in the results panel.
-
----
-
-## 📁 Project Architecture
-
-```text
-burp/
-├── 📂 assets/          # Brand assets and visual documentation
-├── 📂 src/             # Core Java source code
-│   └── 📂 main/java    # Managed under Maven standards
-├── 📄 pom.xml          # Maven Project Object Model
-└── 📄 BUILD.md         # Detailed build instructions
-```
+1. Intercept or select a request in Repeater.
+2. Right-click -> **ZeroX** -> **Generate Auth Matrix**.
+3. Navigate to the **ZeroX Matrix** tab to see the results.
+4. The table displays how different roles (colors) respond to the same endpoint, highlighting potential IDORs or privilege escalation vulnerabilities.
 
 ---
 
 ## 🛡️ Disclaimer
 
-This software is provided for **educational and ethical security testing** purposes only. The author assumes no liability for damages or legal issues resulting from improper use. Always obtain explicit written permission before testing any target.
-
----
-
-## 🤝 Contribution & Support
-
-Contributions drive the evolution of ZeroX. Feel free to:
-
-- Open an **Issue** for bug reports or feature requests.
-- Submit a **Pull Request** to improve the codebase.
-- Star the repository if you find it useful for your research!
-
----
-
-Developed with ❤️ for the Security Community
+This software is provided for **educational and ethical security testing** purposes only. Always obtain explicit written permission before testing any target.
